@@ -1,13 +1,12 @@
 ## Adding Database
 
-We'll implement two different database as an example here: using Sqlite and PostgreSQL. The code should have minimal difference
-in any application in terms of coding but PostgreSql requires little more update.
+We'll setup various databases here for webapi to use. The code should have minimal difference in any application in terms of coding but many SQL DBMS will requires little more configuration.
 
 ### Before Database setup
 
 Some prior installation of packages are required in order to use database. We'll use ORM approach here, which is EF core.
 
-```
+```bash
 dotnet tool install --global dotnet-ef
 dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package <database ORM>
@@ -23,7 +22,7 @@ Initial setup is complete. Now let's move on to the databse specific setup
 
 ### PostgreSQL
 
-This database requires little more configuration due to the nature of requiring to login and setup. But once that's passed the
+This database requires little more configuration than Sqlite for example due to the nature of requiring to login and setup. But once that's passed the
 coding is about the same. Using pgAdmin, open up and start up the server you want to create the database. Under "Login/Group
 Roles", right click and select "Create -> Login/Group Role". Under general enter in the username, and under definition enter
 in the password. Go to privileges,make sure to enable create database and login, or simply enable the superuser. Click save.
