@@ -52,12 +52,15 @@ Now let's modify our GET Method. We'll set default parameter of PageIndex and Pa
 
 ```
 public async Task<RestDTO<Apple[]>>(int pageIndex = 0, int pageSize = 0) {
-	var apples = await _context.Apples()
+	var apples = await _context.Apples
 		.Skp(pageIndex * pageSize)
 		.Take(pageSize);
 
 	return new RestDTO<Apple[]> {
 		Data = apples.ToArrayAsync(),
+		PageIndex = pageIndex,
+		PageSize = pageSize,
+		RecordCount = await _context.Apples.CountAsync(),
 		Links = new List<LinkDTO>() {
 			new LinkDTO(
 				Url.Action (
