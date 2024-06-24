@@ -189,3 +189,66 @@ public async Task<RestDTO<Apple[]>>(
 	};
 }
 ```
+
+### Best practice
+
+As Request parameter gets bigger and bigger, having its own DTO seems reasonable to add. We've already seen pageIndex, pageSize, sortColumn, sortOrder, and filterQuery added and so we'll move thoes parameter to a requestDTO with validations attached (see validation section for more explanation)
+
+```csharp
+public class RequestDTO<T> : IValidatableObject
+{
+	[DefaultValue(0)]
+	public int PageIndex { get; set; } = 0;
+	[DefaultValue(10)]
+	[Range(0, 10)]
+	public int PageSize { get; set; } = 0;
+	[DefaultValue("Name")]
+	public string? SortColumn { get; set; } = "Name";
+	[DefaultValue("ASC")]
+	[SortOrderValidator]
+	public string? SortOrder { get; set; } = "ASC";
+	[DefaultValue(null)]
+	public string? FilterQuery { get; set; } = null;
+
+	public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+	{
+		var validator = new SortColumnValidatorAttribute(typeof(T));
+		var result = validator
+			.GetValidationResult(SortColumn, validationContext);
+		return (result != null)
+			? new[] { result }
+			: new ValidationResult[0];
+	}
+}
+```
+
+We then add RequestDTO into our parameter, and add `[FromQuery]` attribute inside, like this
+
+```csharp
+[HttpGet(Name = "GetApple")]
+[ResponseCache(Location = ResponseCache.Any, Duration = 60)]
+public async Task<RestDTO<BoardGame[]>> ([FromQuery] RequestDTO input) {
+	var query = _context.Apples.AsQueryable();
+	if (!string.IsNullOrEmpty(input.FilterQuery))
+		query = query.Where(a => a.Name.Contains(input.FilterQuery))
+	var recordCount = await query.CountAsync();
+	query = query
+		.OrderBy($"{input.SortColumn} {input.SortOrder}")
+		.Skip(input.PageIndex * input.PageSize)
+		.Take(input.PageSize);
+
+	return new RestDTO<BoardGames[]>() {
+		Data = await query.ToArrayAsync(),
+		PageIndex = input.PageIndex,
+		PageSize = input.PageSize,
+		RecordCount = recordCount,
+		Links = new List<LinkDTO>() {
+			new LinkDTO(
+				Url.Action(null, "BoardGame", new { input.PageIndex, input.PageSize }, Request.Scheme)!,
+				"self",
+				"GET"
+			),
+		}
+	};
+}
+```
