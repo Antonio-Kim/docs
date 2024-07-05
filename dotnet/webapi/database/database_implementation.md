@@ -115,6 +115,27 @@ public class Orange {
 }
 ```
 
+If you do not want your endpoints to have same name as the column variable in the entity, use Newtonsoft.Json package and add the JsonPropertyName attribute:
+
+```bash
+dotnet add package Newtonsoft.Json
+```
+
+and here's how you would configure your key name in the json output:
+
+```csharp
+public class Orange {
+	[Key]
+	[Required]
+	public int Id { get; set; }
+	[Required]
+	[JsonPropertyName("orange_baskets")]
+	public string Description { get; set; } = null!;
+	// Many relationship with junction table
+	public ICollection<Apples_Oranges>? Apples_Oranges { get; set; }
+}
+```
+
 Now we'll go back to our DbContext class and implement those relationship. Remember that EF core has no idea how the relationship works unless you set the relationship. You also have to declare in both directions
 
 ```csharp
@@ -208,6 +229,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 ```
 
 With EF core it is easy to use different databases on the fly. The only difference is, as shown above, is the configuration of the connection string, and alternating the Use method to that specific database.
+
+### EF Migration
+
+Finally, you will need setup Migration for your database to be configured.
+
+```bash
+dotnet ef database update InitialSetup
+```
 
 #### Terminologies
 
