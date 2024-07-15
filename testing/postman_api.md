@@ -42,4 +42,24 @@ pm.test('Product in in stock', () => {
 
 You can set different folders for each type of tests, and inside the folder you can set scripts that runs on all the test inside the test. For example, `const response=pm.repsonse.js()` can be set at the folder level since it will be run on every test.
 
-You can set variables for the collection using `pm.collectionVariables.set('key', 'value');`. You can also get variables for your test by `pm.collectionVariables.get('key')`.
+You can set variables for the collection using `pm.collectionVariables.set('key', 'value');`. You can also get variables for your test by `pm.collectionVariables.get('key')`. To remove the variable, we use `pm.collectionVariables.unset('key')`
+
+### Environments
+
+you can set different environments for testing, and have tests run in different environment as well. For example, some tests will not work on production (nor should you test it in production), but will work on dev or test environment. You can check your environment inside the script by using `pm.environment.name`. This can be useful when you want to run specific tests inside a specific environment. For example, the following code will only run inside "Testing" environment:
+
+```js
+if (pm.environment.name === 'Testing') {
+  pm.test('Status code is 200', () => {
+    pm.response.to.have.status(200);
+  });
+}
+```
+
+However, you cannot select environment inside script. If there's no environment, the `pm.environment.name` will be undefined.
+
+Just like collection, you can also set and get variables using `pm.environment.set("key", "value")` and `pm.environment.get("key")`, and also remove an environment variable by `pm.environment.unset("key")`
+
+Exporting and importing environment file (.json) will not export Current value; only the initial values are exported. API and environments are separate and must be exported and import separately
+
+There are also global variables that are available in all collections and all environments. Unsurprisingly, you can set global variable with `pm.globals.set("key", "value")`, get global variable by `pm.globals.get("key")`, and remove an environment vaible by `pm.gloabls.unset("key")`
