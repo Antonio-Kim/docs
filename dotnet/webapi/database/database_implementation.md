@@ -209,7 +209,7 @@ For Sqlite we add the following service into Program.cs
 
 ```csharp
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection)));
+	options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 ```
 
 If it was PostgreSQL, we use "UseNpgsql" instead.

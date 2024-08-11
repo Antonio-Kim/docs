@@ -1,5 +1,12 @@
 ## .NET MAUI Project structure and application startup
 
+.NET MAUI uses .NET Generic Host for app startup and configuration. Generic Host includes the following:
+
+- Dependency Injection (DI)
+- Logging
+- Configuration
+- Lifecycle management
+
 ### Important files and folders
 
 - **Resources**: folder with shared fonts, images, and assets used by all platforms.
