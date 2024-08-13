@@ -238,6 +238,18 @@ Finally, you will need setup Migration for your database to be configured.
 dotnet ef database update InitialSetup
 ```
 
+If you want to remove the database that was created, you use the drop command
+
+```bash
+dotnet ef database drop
+```
+
+This will effectly remove the database that was created after update command
+
 #### Terminologies
 
 - Navigation property: directly reference single related entity or collection of entities
+
+```
+
+```
