@@ -1,5 +1,12 @@
 ## CSS Topics
 
+## Definitions
+
+- rem: root em, where em is relative unit based on the font size of the element's parent. For example, if div is the parent of the element p, and div has size 12px, then 0.5 em
+  will be 12px \* 0.5 = 6px. The rem in this case, will be based on root element instead of relative.
+- Inline element: takes up only the exact amount of space it needs for its content, similar to `<span>` or `<a>` elements
+- Block elements: placed in new line and takes the full width of their available space unless given specific width.
+
 In terms of positioning items, two main concepts in css are:
 
 - Flexbox
@@ -83,3 +90,43 @@ based on the screen size. For example, we can set different grid layout if the s
 ```
 
 this sets two columns and three rows instead of examples from grid where it sets three columns and three rows.
+
+### Fonts
+
+You can import fonts using `@import url()` on CSS file. The font imports are usually through Google fonts. Fonts have weight attributes that sets the boldness of the font
+
+| Value | Common weight name        |
+| ----- | ------------------------- |
+| 100   | Thin (Hairlien)           |
+| 200   | Extra Light (Ultra Light) |
+| 300   | Light                     |
+| 400   | Normal (Regular)          |
+| 500   | Medium                    |
+| 600   | Semi Bold (Demi Bold)     |
+| 700   | Bold                      |
+| 800   | Extra Bold (Ultra Bold)   |
+| 900   | Black (Heavy)             |
+| 950   | Extra Black (Ultra Black) |
+
+We can set our font properties like this:
+
+```css
+h1 {
+  font-weight: 700;
+  font-size: 4rem;
+  font-family: 'Oswald', sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+}
+```
+
+However the shorthand properties are more common:
+
+```css
+h1 {
+  font: 700 4rem/1 'Oswald', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+}
+```
