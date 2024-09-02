@@ -63,6 +63,11 @@ In order to display content with attributes above, you will need to set the css 
 
 Sometimes, one of the item has to be in different location compared to other items inside. You can use `order` attribute to move the selected attribute around the container.
 
+### Multi-column
+
+This is one of lesser known layout module than grid or flexbox. You can set the number of columns in an element that will continuously flow the content to the next column. To set multi-column, you use
+`column-count` property and then set the value to the number you would want.
+
 ### Selectors
 
 There are four main selectors in CSS:
@@ -130,3 +135,31 @@ h1 {
   text-align: center;
 }
 ```
+
+### Lists
+
+Whether it is unordered or ordered list, we can modify the initial symbols displayed on the list. Typically, the default symbols used are disc or numbers on unordered list and ordered list, respectively. We can set to other symbols, even emojis. To do so, we need to use `@counter-style` to apply to list-style attribute to html elements. There are three main properties in `@counter-style`:
+
+- symbols
+- system descriptor
+- suffix descriptor
+
+Symbols define what will be used to create the bullet style. The system descriptor defines the algorithm used to convert the list items to the visual representation we set on the symbols. Most common value used on system descriptor is **cyclic** which tells the browser to loop through the list, modify the symbols to the list, and return to the first. The suffix descriptor tells the browser what comes between the bullet and the contents of the list items. By default, it is a period. Here's an example of how all of them fit together:
+
+```css
+@counter-style emoji {
+  symbols: '\2615';
+  system: cyclic;
+  suffix: ' ';
+}
+
+article ul {
+  list-style: emoji;
+}
+```
+
+Another way to modify the symbol on the list is to use list-style-image. However the `@counter-style` at-rule gives more flexibility than list-style-image. If you need just simple replacement of the symbol in the list, list-style-image is valid attribute to use instead.
+
+### Miscellanous
+
+- You can set position of images by using `float`. Make sure to add some margins to account for some space
