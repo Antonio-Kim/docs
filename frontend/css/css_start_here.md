@@ -6,6 +6,10 @@
   will be 12px \* 0.5 = 6px. The rem in this case, will be based on root element instead of relative.
 - Inline element: takes up only the exact amount of space it needs for its content, similar to `<span>` or `<a>` elements
 - Block elements: placed in new line and takes the full width of their available space unless given specific width.
+- flex-basis: sets initial size the browser should use when calculating the amount of space the element needs
+- flex-shrink: allows browser to shrink smaller size assigned by flex-basis value if there's not enough room for the element in the container
+- Pseudo-class: added to selector to target specific state
+- Pseudo-element: allows selection of specific part of the element
 
 In terms of positioning items, two main concepts in css are:
 
@@ -14,18 +18,14 @@ In terms of positioning items, two main concepts in css are:
 
 ### Grid
 
-As default, Grid in html are set with one column and one row. You can change the sizes by setting `display: grid;` inside the element and then set number of columns and rows
-by `grid-template-columns` and `grid-template-rows`. Typically the number of rows and columns are set by `repeat()` function in css, where the first parameter sets how many
-columns/rows there will be, and second parameter sets the size. There are four main sizing properties:
+As default, Grid in html are set with one column and one row. If the element inside has multiple elements, it will create another row for each elements. Thus, if you have five elements within grid declaration, it will create five rows. You can change the sizes by setting `display: grid;` inside the element and then set number of columns and rows by `grid-template-columns` and `grid-template-rows`. Typically the number of rows and columns are set by `repeat()` function in css, where the first parameter sets how many columns/rows there will be, and second parameter sets the size. There are four main sizing properties:
 
 - pixel
 - rem
 - fr
 - auto
 
-One useful function for sizing is `minmax()`. This sets what the sizing will be based on what's available on the screen, unless it's hard-coded like pixel and rem. The auto keyword
-sets the size of the element based on the size of the element. It will expand or shrink based on what's available and what the size of the contents are. fr keywoard is called fraction
-and it's based on what's left after sizing the elements that are currently occupied. It then will automatically divide the leftover spaces equally.
+One useful function for sizing is `minmax()`. This sets what the sizing will be based on what's available on the screen, unless it's hard-coded like pixel and rem. The auto keyword sets the size of the element based on the size of the element. It will expand or shrink based on what's available and what the size of the contents are. fr keywoard is called fraction and it's based on what's left after sizing the elements that are currently occupied. It then will automatically divide the leftover spaces equally.
 
 You can preemptively assign area and name them instead of sizing up like grid-row and grid-column attributes and then assign values like grid-row: 2 / 4, using grid-template area:
 
@@ -36,8 +36,7 @@ grid-template-areas:
   'footer footer . ';
 ```
 
-this assigns specific area of the grid into naming variable. The dot shown on bottom right corner indicates that it has no assignable area and is left empty. Once area are now assigned,
-we have to assign the elements to the grid area.
+this assigns specific area of the grid into naming variable. The dot shown on bottom right corner indicates that it has no assignable area and is left empty. Once area are now assigned, we have to assign the elements to the grid area.
 
 ```css
 header {
@@ -65,8 +64,7 @@ Sometimes, one of the item has to be in different location compared to other ite
 
 ### Multi-column
 
-This is one of lesser known layout module than grid or flexbox. You can set the number of columns in an element that will continuously flow the content to the next column. To set multi-column, you use
-`column-count` property and then set the value to the number you would want.
+This is one of lesser known layout module than grid or flexbox. You can set the number of columns in an element that will continuously flow the content to the next column. To set multi-column, you use `column-count` property and then set the value to the number you would want.
 
 ### Selectors
 
@@ -77,10 +75,19 @@ There are four main selectors in CSS:
 - Adjacent sibiling combinator (+): select elements that in the same level as the current element
 - General sibling combinator (~): select all the elements that are sibilings after the element targetd by the selector
 
+You can also select elements using data attributes. For example, if `<div data-name="Total">` exists, you can select that attribute by `div[Total]`. This might not look useful but what we can also do is select the value "Total" from this attribute and add to our html. For example,
+
+```css
+div[data-name]::before {
+  content: attr(data-name) ': ';
+}
+```
+
+will add the text "Total: " to the html element.
+
 ### Screen size
 
-We need to account for different screen sizes, not just on pc but cellphones and tablets have all different sizes. To set specific layout we use `@media` query to set css attributes
-based on the screen size. For example, we can set different grid layout if the screen is large:
+We need to account for different screen sizes, not just on pc but cellphones and tablets have all different sizes. To set specific layout we use `@media` query to set css attributes based on the screen size. For example, we can set different grid layout if the screen is large:
 
 ```css
 @media (min-width: 955px) {
@@ -163,3 +170,4 @@ Another way to modify the symbol on the list is to use list-style-image. However
 ### Miscellanous
 
 - You can set position of images by using `float`. Make sure to add some margins to account for some space
+- do not declare line height unit
