@@ -21,16 +21,7 @@ The code above looks very similar to regular JavaScript. It retrieves the root i
 
 ### Styling with Tailwind CSS
 
-We'll start with setting up Tailwind with create-react-app
-
-```bash
-npx create-react-app my-project
-cd my-project
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-if you're using Vite, this is the setup
+We'll start with setting up Tailwind with Vite
 
 ```bash
 npm create vite@latest my-project -- --template react
