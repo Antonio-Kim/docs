@@ -8,7 +8,10 @@
 - Block elements: placed in new line and takes the full width of their available space unless given specific width.
 - flex-basis: sets initial size the browser should use when calculating the amount of space the element needs
 - flex-shrink: allows browser to shrink smaller size assigned by flex-basis value if there's not enough room for the element in the container
-- Pseudo-class: added to selector to target specific state
+- Pseudo-class: added to selector to target specific state. See https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes for more info. Here are some rare, but often useful pseudo-classes:
+  - :is()
+  - :where()
+  - :invalid()
 - Pseudo-element: allows selection of specific part of the element
 
 In terms of positioning items, two main concepts in css are:
@@ -83,7 +86,16 @@ div[data-name]::before {
 }
 ```
 
-will add the text "Total: " to the html element.
+will add the text "Total: " to the html element. This also does not mean that it has to be specific like data-type. We can also select different types of elements based on their main component. Input has different types like radio, checkbox, and textarea, and css can select them like this:
+
+```css
+input[type='radio'] {
+  border-radius: 50%;
+}
+input[type='checkbox'] {
+  border-radius: 4px;
+}
+```
 
 ### Screen size
 
@@ -171,3 +183,4 @@ Another way to modify the symbol on the list is to use list-style-image. However
 
 - You can set position of images by using `float`. Make sure to add some margins to account for some space
 - do not declare line height unit
+- Use inherit if the element doesn't have the same properties as the parent. For example, input does not import text properties from form parents, so setting `font-family: inherit` to css will inherit text style.
