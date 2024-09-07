@@ -60,3 +60,12 @@ psql -U postgres
 ```
 
 (This does not ask for password when logging in as postgres user. Will need to look into why this might be the case).
+
+## Scaffolding Models using existing database
+
+There are two approaches to use EF Core:
+
+1. Database first: a database exists so you build model that matches its structure and features
+2. Code first: No database exists, so you build a model and then use EF core to create a database that matches its structure and features
+
+The database first approach requires reverse engineering the database, a method called scaffolding.
