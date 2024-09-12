@@ -4,8 +4,34 @@ This section discusses basic and advance concepts and implementation of C# langu
 
 - C# in Depth by Jon Skeet (JS)
 - C Interview Guide by Konstantin Semenenko (KS)
+- C# Data Structures and Algorithms by Marcin Jamro (MJ)
 
 Note that some of the writings will have parentheses with Initial of the author's name, plus the page number for reference.
+
+### Data Types
+
+#### Value Types
+
+- Value Tuples - allows you to group multiple data elements of specific types
+
+```csharp
+(int, int, double) result = Calculate(4, 8, 13);
+// (int min, int max, double avg) result = Calculate(4,8,13); - Another way to destructo Value tuples
+Console.WriteLine($"Min = {result.Item1} / max = {result.Item2} / Avg = {result.Item3}");
+
+public static (int, int, double) Calculate(params int[] numbers) {
+  if (numbers.Length == 0) { return (0,0,0);}
+  int min = int.MaxValue;
+  int max = int.MinValue;
+  int sum = 0;
+  foreach (int number in numbers) {
+    if  (number > max) { max = number; }
+    if  (number < min) { min = number; }
+    sum += number;
+  }
+  return (min, max, (double)sum / numbers.Length);
+}
+```
 
 ### Collections
 
