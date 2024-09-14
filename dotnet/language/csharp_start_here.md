@@ -2,8 +2,9 @@
 
 This section discusses basic and advance concepts and implementation of C# language and libraries. There's not exactly a flow to this section, but merely snippets of ideas that I have come across that might find me useful to understand. The source of the snippets are as follows:
 
+- C# 12 and .NET 8 by Mark Price (MP)
 - C# in Depth by Jon Skeet (JS)
-- C Interview Guide by Konstantin Semenenko (KS)
+- C# Interview Guide by Konstantin Semenenko (KS)
 - C# Data Structures and Algorithms by Marcin Jamro (MJ)
 
 Note that some of the writings will have parentheses with Initial of the author's name, plus the page number for reference.
@@ -32,6 +33,84 @@ public static (int, int, double) Calculate(params int[] numbers) {
   return (min, max, (double)sum / numbers.Length);
 }
 ```
+
+- **Record struct** vs **struct**: record struct has all the benefits of struct, but record struct is not immutable unless readonly is applied. Record struct also implements == and != for you, whereas struct does not.
+
+### String methods
+
+Here are some important String methods in C#:
+
+| Member                    | Description                                                                                                                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Trim, TrimStart, TrimEnd  | These methods trim whitespace characters such as space, tab, and carriage return from the start and/or end                                                                                               |
+| ToUpper, ToLower          | These convert all the characters into uppercase or lowercase.                                                                                                                                            |
+| Insert, Remove            | These methods insert or remove some text.                                                                                                                                                                |
+| Replace                   | This replaces some text with other text.                                                                                                                                                                 |
+| string.Empty              | This can be used instead of allocating memory each time you use a literal string value using an empty pair of double quotes ("").                                                                        |
+| string.Concat             | This concatenates two string varibles. The + operator does the equivalent when used between string operands.                                                                                             |
+| string.Join               | This concatenates one or more string variables with a character in between each one                                                                                                                      |
+| string.IsNullOrEmpty      | This checks whether a string variable is null or empty                                                                                                                                                   |
+| string.IsNullOrWhiteSpace | this checks whether a string variable is null or whitespace; that is, a mix of any number of horizontal and veriical spacing characters, for example, tab, space, carriage return, line feed, and so on. |
+
+### Regular Expressions
+
+- IsMatch is the most common method to use regular expression. Here are some of the syntax and quantifier used in regex:
+
+| Symbol      | Meaning                | Symbol   | Meaning                    |
+| ----------- | ---------------------- | -------- | -------------------------- |
+| ^           | Start of input         | $        | End of input               |
+| \d          | A single digit         | \D       | A single non-digit         |
+| \s          | Whitespace             | \S       | non-whitespace             |
+| \w          | word characters        | \W       | Non-word characters        |
+| [A-Za-z0-9] | Range(s) of characters | \^       | (caret) characters         |
+| [aeiou]     | Set of characters      | [^aeiou] | Not in a set of characters |
+| .           | Any single character   | \.       | .(dot) character           |
+
+Here are the quantifier
+
+| Symbol | Meaning        | Symbol | Meaning       |
+| ------ | -------------- | ------ | ------------- |
+| +      | One or more    | ?      | One or none   |
+| {3}    | Exactly three  | {3,5}  | Three to five |
+| {3,}   | At least three | {,3}   | Up to three   |
+
+In order to use Regex, you will need to import `using System.Text.RegularExpression`. Here are three main methods to use Regex in C#:
+
+1. **Regex.Match**: this is used to match a string. The signature is `Match <variable> = Regex.Match(_InputStr_, _Pattern_, _RegexOptions_)`. Here's an example:
+
+```csharp
+string pattern = @"([a-zA-Z]+) (\d+)";
+Match result = Regex.Match("June 24", pattern);
+```
+
+2. **Regex.Matches**: We can do global search over the whole input and have multiple corresponding data instead of just one, using `Regex.Matches`.
+
+```csharp
+string pattern = @"([a-zA-Z]+) (\d+)";
+MatchCollection matches = Regex.Matches("June 24, August 9, Dec 12", pattern);
+Console.WriteLine($"{matches.Count} matches");
+```
+
+3. **Regex.Replace**: Similar to Match but instead of search we replace the string instead.
+
+```csharp
+string pattern = @"([a-zA-Z]+) (\d+)";
+string replacedString = Regex.Replace("June 24, August 9, Dec 12", pattern, @"$2 of $1");
+Console.WriteLine(replacedString);
+```
+
+All the methods have Regex Option in the signature. Here are some of the common options:
+
+- RegexOptions.Compiled
+- RegexOptions.IgnoreCase
+- RegexOptions.Multiline
+- RegexOptions.RightToLeft
+- RegextOptions.SingleLine
+
+### Useful Interfaces
+
+- **IComparable**: used to allow sorting between same classes' object. Needs to implement _CompareTo_ method which returns either -1 if the object needs to move in front of the object being compared, 1 if the object needs to move behind the object being compared, and 0 if they are the same. (MP)
+- **IComparer**: comparsion method that a secondary type implements to order or sort instance of a primary type. Sometimes it might not be possible to access the source code for a type, nor it might not implement that IComparable interface. (MP)
 
 ### Collections
 
