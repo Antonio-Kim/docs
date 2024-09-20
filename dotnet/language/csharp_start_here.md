@@ -12,7 +12,9 @@ Note that some of the writings will have parentheses with Initial of the author'
 ### Data Types
 
 - Multi-Dimensional Array vs Jagged array
+
   - The declaration of multi-dimensional array is different in C# compared to other languages. For example, the 2-dimensional array in C# is declared with a comma
+
   ```csharp
   // declaration only
   int[,] numbers = new int[2,2];
@@ -22,8 +24,13 @@ Note that some of the writings will have parentheses with Initial of the author'
     {1,2},
     {3,4}
   }
+
+  // Output 4
+  Console.WriteLine(numbers2[1,1]);
   ```
+
   The Jagged array means that each row can have different number of columns, unlike regular arrays which requires same number of columns each row. This declaration looks similar to other languages
+
   ```csharp
   int[][] numbers = new int[4][];
   numbers[0] = new int[]{ 9, 5};
