@@ -58,9 +58,132 @@ Go to simulate > run > run-all, and on the waveform window press "f" to zoom ful
   - See if the status is green
   - Simulate > Run > Run-All
 
+### SystemVerilog Type definition
+
+In SystemVerilog the basic types can be separated into two types: two state values, and four state values.
+
+- Four State Value: four state values are - 0 and 1, x for unknown, and z for high impedance
+  When Simulation kernel starts, the four state types usually start with x as unknown, then gets assigned to whichever value that programmer assigns afterwards. Problem with four state types is that it requires two more state, x and z than the counterpart two state, and in a large system, designers usually opt for two states intead because of this overhead.
+
+### Port Specification
+
+Usually when module is declared, you would set the order of the parameters in the higher module the same as the lower module's order. For example, say we have a simple mux:
+
+```verilog
+module mux
+  (input logic a, b, sel,
+  output logic f);
+
+  assign f = (sel) ? a : b;
+endmodule: mux
+```
+
+we know from above that the inputs has to be on the first three parameter, and the output has to be placed on the last parameter. So when this is called in the higher order module
+
+```verilog
+module datapath;
+  logic sel, in0, in1, result;
+
+  mux a(in0,in1,sel,result);
+endmodule:datapath
+```
+
+inputs has to match the order of the lower module. There are other ways to do this, and few of them are: setting **named port**, using **all name match** and **some name match**.
+
+#### Named port
+
+Instead of ordering them, we can assign the parameters to match the name of the lower module using "." and the lower module name, and parentheses for parameter used in higher module, and not worryh about the orders.
+
+```verilog
+module byNamePort;
+  logic s,in1,in0,out;
+
+  mux b(.a(in0), .sel(s), .b(in1), .f(out))
+```
+
+#### All name match
+
+If all the names in higher order matches the lower module's parameter, we can use the '.' with the wildcard "\*".
+
+```verilog
+module allNamesMatch
+  logic a, b, sel, f;
+
+  mux c(.*);
+```
+
+#### Some name match
+
+If most of them matches the lower module's port but some of them don't, wee can use named port for those, and use all name match for the rest.
+
+```verilog
+module someNamesMatch
+  logic in0, in1, sel, f;
+
+  mux d(.a(in0), .b(in1), .*);
+```
+
+### Enumeration and Type Definitions
+
+Enumeration provides controleld method for introducing named constants. They are very similar to programming language's enumeration type. For example
+
+```verilog
+enum {CHEVY,FORD,TOYOTA} car1, car2;
+```
+
+says car1 and car2 can only have those three values. We can also assign values to the enum type so that it would be easier and less error prone when looking up the values. For example,
+
+```verilog
+enum logic[2:0] {
+  ADD = 3'b100,
+  SUB = 3'b010,
+  AND = 3'b001,
+  OR = 3'b110,
+  XOR = 3'b001
+} op;
+```
+
+here the enum name is op, and will only consist of those five operations. More common approach to enum is using typedef to create a new type definition. Following up the enum example above, we can create a new type and then use it in our module. Here's a long, but detailed version of how typedef enum would be used
+
+```verilog
+typedef enum logic[2:0]{
+  ADD = 3'b100,
+  SUB = 3'b010,
+  AND = 3'b001,
+  OR = 3'b110,
+  XOR = 3'b110
+} aluInst_t;
+
+module alu
+  (input logic [7:0] a, b,
+  output logic [7:0] result,
+  input aluInst_t op);
+
+  always_comb
+    unique case(op)
+      ADD: result = a + b;
+      SUB: result = a - b;
+      AND: result = a & b;
+      OR: result = a | b;
+      XOR: result = a ^ b;
+    endcase
+endmodule: alu
+```
+
+Enums have methods that allow you to help other task such as printing name of the enum type, but also create loops. You can use `<enum name>.<method>` to access these methods. Here are some of the examples available for enums:
+
+- name: provides string that can be printed as part of $monitor or $display
+- first: returns first value of the first enumeration label
+- next: returns the value of the next enumeration label in the list
+- last: returns the value of the last enumeration label in the list
+
 ### Defintions
 
 - module hierarchy: modules instantiated within other modules
 - Scalar variables: single-bit variable
 - Vectors variables: multi-bit variable
 - bit select: only one bit of vector is selected. For example, A[0] selects the first bit from right
+
+```
+
+```
